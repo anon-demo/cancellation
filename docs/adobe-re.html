@@ -1,0 +1,2296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Adobe Account</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Adobe Clean', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background-color: #f5f5f5;
+      color: #2c2c2c;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+    
+    /* Research Banner */
+    .research-banner {
+      background: #eb1000;
+      color: white;
+      text-align: center;
+      padding: 8px 16px;
+      font-size: 12px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+    }
+    
+    /* Adobe Navbar */
+    .navbar {
+      background: white;
+      border-bottom: 1px solid #e1e1e1;
+      padding: 0 24px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: fixed;
+      top: 32px;
+      left: 0;
+      right: 0;
+      z-index: 100;
+    }
+    
+    .navbar-left {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+    }
+    
+    .adobe-logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #eb1000;
+      font-weight: 700;
+      font-size: 16px;
+      text-decoration: none;
+    }
+    
+    .adobe-logo svg {
+      width: 28px;
+      height: 28px;
+    }
+    
+    .nav-links {
+      display: flex;
+      gap: 24px;
+    }
+    
+    .nav-link {
+      color: #2c2c2c;
+      text-decoration: none;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 16px 0;
+      border-bottom: 3px solid transparent;
+    }
+    
+    .nav-link.active {
+      border-bottom-color: #2c2c2c;
+    }
+    
+    .nav-link svg {
+      width: 12px;
+      height: 12px;
+    }
+    
+    .navbar-right {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    
+    .nav-icon {
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+      color: #2c2c2c;
+    }
+    
+    .notification-badge {
+      position: relative;
+    }
+    
+    .notification-badge::after {
+      content: '1';
+      position: absolute;
+      top: -4px;
+      right: -4px;
+      background: #eb1000;
+      color: white;
+      font-size: 10px;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .user-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #00b4d8 0%, #0077b6 100%);
+    }
+    
+    /* Main Content */
+    .main-content {
+      margin-top: 88px;
+      padding: 32px 48px;
+      min-height: calc(100vh - 88px);
+    }
+    
+    .welcome-title {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 32px;
+    }
+    
+    /* Plan Card */
+    .plan-section {
+      display: flex;
+      gap: 32px;
+    }
+    
+    .plan-card {
+      background: white;
+      border-radius: 8px;
+      padding: 24px;
+      flex: 1;
+      max-width: 900px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    }
+    
+    .plan-card h2 {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+    
+    .plan-details {
+      display: flex;
+      gap: 32px;
+    }
+    
+    .plan-image {
+      width: 200px;
+      height: 140px;
+      background: linear-gradient(135deg, #ff6b6b, #feca57, #48dbfb, #ff9ff3);
+      border-radius: 8px;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .plan-image .cc-logo-overlay {
+      position: absolute;
+      bottom: 8px;
+      left: 8px;
+      width: 36px;
+      height: 36px;
+    }
+    
+    .plan-info h3 {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    
+    .plan-info p {
+      color: #6e6e6e;
+      font-size: 13px;
+      margin-bottom: 16px;
+    }
+    
+    .btn {
+      padding: 7px 14px;
+      border-radius: 16px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: 2px solid #4b4b4b;
+      background: white;
+      color: #4b4b4b;
+      font-weight: 600;
+    }
+    
+    .btn:hover {
+      background: #f5f5f5;
+    }
+    
+    .btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+    
+    .btn-primary {
+      background: #1473e6;
+      border-color: #1473e6;
+      color: white;
+    }
+    
+    .btn-primary:hover {
+      background: #0d66d0;
+    }
+    
+    .btn-primary:disabled {
+      background: #b3d4fc;
+      border-color: #b3d4fc;
+      cursor: not-allowed;
+    }
+    
+    .btn-cta {
+      background: #1473e6;
+      border-color: #1473e6;
+      color: white;
+    }
+    
+    .btn-cta:hover {
+      background: #0d66d0;
+    }
+    
+    .btn-disabled-sim {
+      position: relative;
+    }
+    
+    .btn-disabled-sim:hover .disabled-tooltip {
+      display: block;
+    }
+    
+    .disabled-tooltip {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #eb1000;
+      color: white;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      white-space: nowrap;
+      margin-top: 4px;
+      z-index: 10;
+    }
+    
+    .included-list {
+      list-style: none;
+    }
+    
+    .included-list li {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+      font-size: 13px;
+    }
+    
+    .app-icon {
+      width: 24px;
+      height: 24px;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 10px;
+      font-weight: 700;
+    }
+    
+    .app-icon.ps { background: #31a8ff; }
+    .app-icon.lr { background: #31a8ff; }
+    .app-icon.ai { background: #ff9a00; }
+    .app-icon.id { background: #ff3366; }
+    .app-icon.lrc { background: #31a8ff; }
+    
+    .billing-section h3 {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+    
+    .billing-info {
+      font-size: 13px;
+      color: #6e6e6e;
+    }
+    
+    .billing-price {
+      font-size: 14px;
+      color: #2c2c2c;
+      margin-top: 8px;
+    }
+    
+    .view-more {
+      color: #1473e6;
+      text-decoration: none;
+      font-size: 13px;
+    }
+    
+    /* Profile Card */
+    .profile-card {
+      background: white;
+      border-radius: 8px;
+      padding: 24px;
+      width: 280px;
+      text-align: center;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    }
+    
+    .profile-avatar {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #00b4d8 0%, #0077b6 100%);
+      margin: 0 auto 16px;
+    }
+    
+    .profile-name {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+    
+    .profile-email {
+      font-size: 13px;
+      color: #6e6e6e;
+      margin-bottom: 8px;
+    }
+    
+    .profile-link {
+      color: #1473e6;
+      text-decoration: none;
+      font-size: 13px;
+    }
+    
+    /* Modal Overlay */
+    .modal-overlay {
+      position: fixed;
+      top: 32px;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 200;
+    }
+    
+    .modal {
+      background: white;
+      border-radius: 8px;
+      width: 90%;
+      max-width: 520px;
+      max-height: calc(100vh - 64px);
+      overflow-y: auto;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.15);
+    }
+    
+    .modal-header {
+      padding: 20px 24px;
+      border-bottom: 1px solid #e1e1e1;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .modal-header h2 {
+      font-size: 20px;
+      font-weight: 700;
+    }
+    
+    .modal-close {
+      background: none;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+      color: #6e6e6e;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 4px;
+    }
+    
+    .modal-close:hover {
+      background: #f5f5f5;
+    }
+    
+    .modal-body {
+      padding: 24px;
+    }
+    
+    .modal-plan-info {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    
+    .cc-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #FF3366 0%, #7C4DFF 100%);
+      position: relative;
+    }
+    
+    .cc-icon::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 30px;
+      height: 30px;
+      background: white;
+      border-radius: 50%;
+    }
+    
+    .modal-plan-details h3 {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    
+    .modal-plan-details ul {
+      list-style: none;
+      font-size: 13px;
+      color: #6e6e6e;
+    }
+    
+    .modal-plan-details li {
+      margin-bottom: 4px;
+    }
+    
+    .action-card {
+      border: 1px solid #e1e1e1;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .action-card-content {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      flex: 1;
+    }
+    
+    .action-icon {
+      width: 32px;
+      height: 32px;
+      color: #1473e6;
+      flex-shrink: 0;
+    }
+    
+    .action-card h4 {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    
+    .action-card p {
+      font-size: 13px;
+      color: #6e6e6e;
+    }
+    
+    /* Login Screen */
+    .login-screen {
+      min-height: 100vh;
+      display: flex;
+      padding-top: 32px;
+    }
+    
+    .login-left {
+      flex: 1;
+      background: linear-gradient(135deg, #8b7355 0%, #6b8e7d 50%, #a67b5b 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      padding: 48px;
+    }
+    
+    .login-left .adobe-logo-white {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 32px;
+      font-weight: 700;
+    }
+    
+    .login-left .adobe-logo-white svg {
+      width: 48px;
+      height: 48px;
+      fill: white;
+    }
+    
+    .login-left p {
+      margin-top: 8px;
+      font-size: 18px;
+      opacity: 0.9;
+    }
+    
+    .login-right {
+      width: 450px;
+      background: white;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .login-banner {
+      background: #1473e6;
+      color: white;
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+    }
+    
+    .login-form {
+      padding: 48px;
+      flex: 1;
+    }
+    
+    .login-form h1 {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 24px;
+    }
+    
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    
+    .user-info-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #00b4d8 0%, #0077b6 100%);
+    }
+    
+    .user-info-text {
+      font-size: 14px;
+    }
+    
+    .user-info-text .email {
+      font-weight: 600;
+    }
+    
+    .user-info-text .account-type {
+      color: #6e6e6e;
+      font-size: 12px;
+    }
+    
+    .form-group {
+      margin-bottom: 16px;
+    }
+    
+    .form-group label {
+      display: block;
+      font-size: 12px;
+      color: #6e6e6e;
+      margin-bottom: 4px;
+    }
+    
+    .password-input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #d3d3d3;
+      border-radius: 4px;
+      font-size: 14px;
+      background: #fafafa;
+      pointer-events: none;
+    }
+    
+    .form-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+    
+    .toggle-switch {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+    }
+    
+    .toggle {
+      width: 40px;
+      height: 20px;
+      background: #1473e6;
+      border-radius: 10px;
+      position: relative;
+    }
+    
+    .toggle::after {
+      content: '';
+      position: absolute;
+      right: 2px;
+      top: 2px;
+      width: 16px;
+      height: 16px;
+      background: white;
+      border-radius: 50%;
+    }
+    
+    .login-form .btn-primary {
+      padding: 12px 24px;
+      pointer-events: none;
+      opacity: 0.7;
+    }
+    
+    .reset-password {
+      display: block;
+      margin-top: 48px;
+      color: #1473e6;
+      text-decoration: none;
+      font-size: 14px;
+      pointer-events: none;
+    }
+    
+    /* Cancellation Flow Modal */
+    .cancel-modal {
+      width: 95%;
+      max-width: 1000px;
+      max-height: calc(100vh - 64px);
+    }
+    
+    .cancel-header {
+      padding: 12px 20px;
+      border-bottom: 1px solid #e1e1e1;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .cancel-header-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    
+    .cancel-header-left .back-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 20px;
+      color: #6e6e6e;
+      padding: 4px 8px;
+    }
+    
+    .cancel-header h2 {
+      font-size: 14px;
+      font-weight: 400;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .cancel-header .cc-icon-small {
+      width: 24px;
+      height: 24px;
+      background: linear-gradient(135deg, #FF3366 0%, #7C4DFF 100%);
+      border-radius: 4px;
+      position: relative;
+      display: inline-block;
+    }
+    
+    .cancel-header .cc-icon-small::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 14px;
+      height: 14px;
+      background: white;
+      border-radius: 50%;
+    }
+    
+    .cancel-header-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 13px;
+      color: #6e6e6e;
+    }
+    
+    .cancel-body {
+      display: flex;
+      max-height: calc(100vh - 220px);
+    }
+    
+    .cancel-main {
+      flex: 1;
+      padding: 20px 28px;
+      overflow-y: auto;
+    }
+    
+    .step-indicator {
+      font-size: 12px;
+      color: #6e6e6e;
+      margin-bottom: 4px;
+    }
+    
+    .cancel-main h1 {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+    
+    .cancel-sidebar {
+      width: 240px;
+      padding: 20px;
+      background: #fafafa;
+      border-left: 1px solid #e1e1e1;
+    }
+    
+    .cancel-sidebar h3 {
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 12px;
+      color: #6e6e6e;
+    }
+    
+    .sidebar-plan {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+    
+    .sidebar-plan .cc-icon-small {
+      width: 28px;
+      height: 28px;
+      background: linear-gradient(135deg, #FF3366 0%, #7C4DFF 100%);
+      border-radius: 4px;
+      position: relative;
+      flex-shrink: 0;
+    }
+    
+    .sidebar-plan .cc-icon-small::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 16px;
+      height: 16px;
+      background: white;
+      border-radius: 50%;
+    }
+    
+    .sidebar-plan-name {
+      font-size: 13px;
+      font-weight: 600;
+    }
+    
+    .sidebar-commitment {
+      font-size: 11px;
+      color: #6e6e6e;
+      margin-top: 8px;
+    }
+    
+    .cancel-footer {
+      padding: 12px 20px;
+      border-top: 1px solid #e1e1e1;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .cancel-footer-right {
+      display: flex;
+      gap: 12px;
+    }
+    
+    /* Step 1: Details Cards */
+    .details-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    
+    .detail-card {
+      background: white;
+      border: 1px solid #e1e1e1;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    
+    .detail-card-header {
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .detail-card-header.warning {
+      background: #eb8d00;
+    }
+    
+    .detail-card-header.cc {
+      background: linear-gradient(135deg, #ff3366 0%, #ff0066 50%, #7c4dff 100%);
+    }
+    
+    .detail-card-header.apps {
+      background: linear-gradient(135deg, #ff3366 0%, #ff0066 50%, #7c4dff 100%);
+    }
+    
+    .detail-card-header.files {
+      background: #f5f5f5;
+    }
+    
+    .detail-card-header svg {
+      width: 32px;
+      height: 32px;
+    }
+    
+    .detail-card-body {
+      padding: 12px;
+    }
+    
+    .detail-card-body h3 {
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      line-height: 1.3;
+    }
+    
+    .cancellation-fee {
+      font-size: 24px;
+      font-weight: 700;
+      color: #eb1000;
+      margin: 8px 0;
+    }
+    
+    .detail-card-body p {
+      font-size: 11px;
+      color: #6e6e6e;
+      line-height: 1.4;
+    }
+    
+    .detail-card-body .learn-more {
+      color: #1473e6;
+      text-decoration: none;
+    }
+    
+    .subscription-info {
+      display: flex;
+      align-items: flex-start;
+      gap: 6px;
+      margin-bottom: 8px;
+      font-size: 11px;
+    }
+    
+    .subscription-info svg {
+      width: 14px;
+      height: 14px;
+      flex-shrink: 0;
+    }
+    
+    .app-icons {
+      display: flex;
+      gap: 4px;
+      margin: 8px 0;
+    }
+    
+    .app-icons .app-icon {
+      width: 24px;
+      height: 24px;
+      font-size: 8px;
+    }
+    
+    /* Step 2: Feedback */
+    .feedback-subtitle {
+      font-size: 14px;
+      color: #6e6e6e;
+      margin-bottom: 16px;
+    }
+    
+    .checkbox-list {
+      list-style: none;
+    }
+    
+    .checkbox-item {
+      margin-bottom: 10px;
+    }
+    
+    .checkbox-label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      cursor: pointer;
+    }
+    
+    .checkbox-label input {
+      width: 16px;
+      height: 16px;
+      cursor: pointer;
+    }
+    
+    /* Switch Plan Popup */
+    .popup-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 300;
+    }
+    
+    .popup {
+      background: white;
+      border-radius: 8px;
+      padding: 32px;
+      width: 90%;
+      max-width: 420px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.2);
+    }
+    
+    .popup h2 {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      line-height: 1.3;
+    }
+    
+    .popup p {
+      font-size: 14px;
+      color: #6e6e6e;
+      margin-bottom: 24px;
+      line-height: 1.5;
+    }
+    
+    .popup-buttons {
+      display: flex;
+      gap: 12px;
+      justify-content: flex-end;
+    }
+    
+    /* Step 3: Offers */
+    .offers-subtitle {
+      font-size: 13px;
+      color: #6e6e6e;
+      margin-bottom: 16px;
+    }
+    
+    .offers-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+    
+    .offer-card {
+      border: 1px solid #e1e1e1;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    
+    .offer-card-header {
+      height: 70px;
+      background: linear-gradient(135deg, #ff6b6b, #feca57, #48dbfb, #ff9ff3);
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .offer-card-header.search {
+      background: #e1e1e1;
+    }
+    
+    .offer-card-header.chat {
+      background: #6e6e6e;
+    }
+    
+    .offer-card-header svg {
+      width: 36px;
+      height: 36px;
+      color: white;
+    }
+    
+    .best-offer-badge {
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      background: #12805c;
+      color: white;
+      padding: 3px 6px;
+      border-radius: 4px;
+      font-size: 10px;
+      font-weight: 600;
+    }
+    
+    .offer-card-body {
+      padding: 12px;
+    }
+    
+    .offer-card-body h3 {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+    
+    .offer-card-body p {
+      font-size: 12px;
+      color: #6e6e6e;
+      margin-bottom: 8px;
+    }
+    
+    .offer-pricing {
+      margin-bottom: 10px;
+    }
+    
+    .offer-pricing .regular {
+      font-size: 12px;
+      color: #6e6e6e;
+      text-decoration: line-through;
+    }
+    
+    .offer-pricing .promo {
+      font-size: 11px;
+      color: #12805c;
+    }
+    
+    .offer-pricing .price {
+      font-size: 20px;
+      font-weight: 700;
+      color: #12805c;
+    }
+    
+    .offer-select {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #d3d3d3;
+      border-radius: 4px;
+      font-size: 13px;
+    }
+    
+    /* Step 4: Review */
+    .review-list {
+      list-style: none;
+    }
+    
+    .review-item {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    
+    .review-icon {
+      width: 20px;
+      height: 20px;
+      color: #6e6e6e;
+      flex-shrink: 0;
+    }
+    
+    .review-content h3 {
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+    
+    .review-content p {
+      font-size: 12px;
+      color: #6e6e6e;
+      line-height: 1.4;
+    }
+    
+    .btn-danger {
+      background: #1473e6;
+      border-color: #1473e6;
+      color: white;
+    }
+    
+    .btn-danger:hover {
+      background: #0d66d0;
+    }
+    
+    /* Hidden screens */
+    .screen {
+      display: none;
+    }
+    
+    .screen.active {
+      display: block;
+    }
+    
+    /* Hide all intermediate screens for simplified version */
+    #screen2, #screen3, #screen4, #screen5, #screen6, #screen7 {
+      display: none !important;
+    }
+    
+    /* Password typing animation */
+    @keyframes blink {
+      0%, 50% { opacity: 1; }
+      51%, 100% { opacity: 0; }
+    }
+    
+    .cursor-blink {
+      animation: blink 1s infinite;
+    }
+  </style>
+</head>
+<body>
+  <!-- Research Banner -->
+  <div class="research-banner">
+    This is just a simulation. It is independent academic research, not affiliated with or endorsed by Adobe.
+  </div>
+
+  <!-- Screen 1: Account Overview -->
+  <div id="screen1" class="screen active">
+    <nav class="navbar">
+      <div class="navbar-left">
+        <a href="#" class="adobe-logo">
+          <svg viewBox="0 0 30 26" fill="currentColor">
+            <path d="M19.1 0H30v26L19.1 0zM10.9 0H0v26L10.9 0zM15 9.6L22.1 26h-4.6l-2.1-5.2h-5.2L15 9.6z"/>
+          </svg>
+          Adobe Account
+        </a>
+        <div class="nav-links">
+          <a href="#" class="nav-link active">Overview</a>
+          <a href="#" class="nav-link">Account and security <svg viewBox="0 0 12 12"><path d="M3 4.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></a>
+          <a href="#" class="nav-link">Plans and payment <svg viewBox="0 0 12 12"><path d="M3 4.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></a>
+          <a href="#" class="nav-link">Communication preferences <svg viewBox="0 0 12 12"><path d="M3 4.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></a>
+        </div>
+      </div>
+      <div class="navbar-right">
+        <div class="notification-badge">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+          </svg>
+        </div>
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="currentColor">
+          <circle cx="4" cy="4" r="2"/><circle cx="12" cy="4" r="2"/><circle cx="20" cy="4" r="2"/>
+          <circle cx="4" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="20" cy="12" r="2"/>
+          <circle cx="4" cy="20" r="2"/><circle cx="12" cy="20" r="2"/><circle cx="20" cy="20" r="2"/>
+        </svg>
+        <div class="user-avatar"></div>
+      </div>
+    </nav>
+    
+    <main class="main-content">
+      <h1 class="welcome-title">Welcome to your account, User</h1>
+      
+      <div class="plan-section">
+        <div class="plan-card">
+          <h2>Your plan</h2>
+          <div class="plan-details">
+            <div class="plan-image">
+              <svg class="cc-logo-overlay" viewBox="0 0 48 48">
+                <defs>
+                  <linearGradient id="ccGradLogo" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#FF3366"/>
+                    <stop offset="100%" stop-color="#7C4DFF"/>
+                  </linearGradient>
+                </defs>
+                <circle cx="24" cy="24" r="22" fill="url(#ccGradLogo)"/>
+                <circle cx="24" cy="24" r="14" fill="none" stroke="white" stroke-width="4"/>
+              </svg>
+            </div>
+            <div class="plan-info">
+              <h3>Creative Cloud All Apps 100GB</h3>
+              <p>Get 20+ creative apps including Photoshop, Illustrator, InDesign, Premiere Pro, and Acrobat Pro with 100GB of storage</p>
+              <button class="btn" id="managePlanBtn" data-cta="cancel-subscription">Cancel subscription</button>
+            </div>
+            <div class="included-section">
+              <h3 style="font-size: 14px; font-weight: 600; margin-bottom: 8px;">Included in your plan</h3>
+              <ul class="included-list">
+                <li><span class="app-icon ps">Ps</span> Photoshop</li>
+                <li><span class="app-icon lr">Lr</span> Adobe Lightroom</li>
+                <li><svg width="24" height="24" viewBox="0 0 24 24" fill="#6e6e6e"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z"/></svg> Cloud storage 100GB</li>
+                <li><svg width="24" height="24" viewBox="0 0 24 24" fill="#6e6e6e"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg> Generative AI uses</li>
+              </ul>
+              <a href="#" class="view-more">+48 view more</a>
+            </div>
+            <div class="billing-section">
+              <h3>Billing and payment</h3>
+              <div class="btn-disabled-sim">
+                <button class="btn" style="margin-bottom: 12px; opacity: 0.6; cursor: not-allowed;">Edit billing and payment</button>
+                <span class="disabled-tooltip">This button is disabled for this simulation</span>
+              </div>
+              <div class="billing-price">$54.99/mo</div>
+              <div class="billing-info">Next payment on <span id="nextPaymentDate1"></span></div>
+              <div class="billing-info">Annual plan, paid monthly</div>
+              <a href="#" class="view-more" style="display: block; margin-top: 12px">View billing history</a>
+            </div>
+          </div>
+        </div>
+        
+        <div class="profile-card">
+          <div class="profile-avatar"></div>
+          <div class="profile-name">User</div>
+          <div class="btn-disabled-sim">
+            <button class="btn" style="margin-bottom: 16px; opacity: 0.6; cursor: not-allowed;">Edit profile</button>
+            <span class="disabled-tooltip">This button is disabled for this simulation</span>
+          </div>
+          <div class="profile-email">user@email.com</div>
+          <a href="#" class="profile-link">Change email</a>
+          <div style="margin-top: 16px; font-size: 12px; color: #6e6e6e;">Password last changed 3 years ago</div>
+          <a href="#" class="profile-link">Change password</a>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Screen 2: Manage Plan Modal -->
+  <div id="screen2" class="screen">
+    <nav class="navbar">
+      <div class="navbar-left">
+        <a href="#" class="adobe-logo">
+          <svg viewBox="0 0 30 26" fill="currentColor">
+            <path d="M19.1 0H30v26L19.1 0zM10.9 0H0v26L10.9 0zM15 9.6L22.1 26h-4.6l-2.1-5.2h-5.2L15 9.6z"/>
+          </svg>
+          Adobe Account
+        </a>
+        <div class="nav-links">
+          <a href="#" class="nav-link active">Overview</a>
+          <a href="#" class="nav-link">Account and security <svg viewBox="0 0 12 12"><path d="M3 4.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></a>
+          <a href="#" class="nav-link">Plans and payment <svg viewBox="0 0 12 12"><path d="M3 4.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></a>
+          <a href="#" class="nav-link">Communication preferences <svg viewBox="0 0 12 12"><path d="M3 4.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></a>
+        </div>
+      </div>
+      <div class="navbar-right">
+        <div class="notification-badge">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+          </svg>
+        </div>
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="currentColor">
+          <circle cx="4" cy="4" r="2"/><circle cx="12" cy="4" r="2"/><circle cx="20" cy="4" r="2"/>
+          <circle cx="4" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="20" cy="12" r="2"/>
+          <circle cx="4" cy="20" r="2"/><circle cx="12" cy="20" r="2"/><circle cx="20" cy="20" r="2"/>
+        </svg>
+        <div class="user-avatar"></div>
+      </div>
+    </nav>
+    
+    <main class="main-content">
+      <h1 class="welcome-title">Welcome to your account, User</h1>
+      
+      <div class="modal-overlay">
+        <div class="modal">
+          <div class="modal-header">
+            <h2>Manage Plan</h2>
+            <button class="modal-close" id="closeModal2" data-cta="close-manage-plan">&times;</button>
+          </div>
+          <div class="modal-body">
+            <div style="display: flex; gap: 16px; margin-bottom: 24px;">
+              <div style="font-size: 14px; font-weight: 600;">Your plan</div>
+              <div style="font-size: 14px; font-weight: 600; color: #6e6e6e;">Available actions</div>
+            </div>
+            
+            <div class="modal-plan-info">
+              <div class="cc-icon"></div>
+              <div class="modal-plan-details">
+                <h3>Creative Cloud All Apps 100GB</h3>
+                <ul>
+                  <li>$54.99/mo</li>
+                  <li>Cloud storage: 100GB</li>
+                  <li>Subscribed since <span id="subscribedDate"></span></li>
+                  <li>Includes 50 apps and services</li>
+                </ul>
+              </div>
+            </div>
+            
+            <div class="action-card">
+              <div class="action-card-content">
+                <svg class="action-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <path d="M21 21l-4.35-4.35"></path>
+                  <path d="M8 11h6"></path>
+                  <path d="M11 8v6"></path>
+                </svg>
+                <div>
+                  <h4>Find a better plan</h4>
+                  <p>Not enough apps in your plan? Monthly payment too high? Let us help you find the right plan for your needs, and make the switch quick and easy.</p>
+                </div>
+              </div>
+              <button class="btn" id="changePlanBtn" data-cta="change-your-plan">Change your plan</button>
+            </div>
+            
+            <div class="action-card">
+              <div class="action-card-content">
+                <svg class="action-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <path d="M15 9l-6 6"></path>
+                  <path d="M9 9l6 6"></path>
+                </svg>
+                <div>
+                  <h4>End your service</h4>
+                  <p>Sometimes you just need to call it quits. We get it.</p>
+                </div>
+              </div>
+              <button class="btn" id="cancelPlanBtn" data-cta="cancel-your-plan">Cancel your plan</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Screen 3: Password Verification -->
+  <div id="screen3" class="screen">
+    <div class="research-banner" style="position: fixed; top: 0;">
+      This is just a simulation. It is independent academic research, not affiliated with or endorsed by Adobe.
+    </div>
+    <div class="login-screen">
+      <div class="login-left">
+        <div class="adobe-logo-white">
+          <svg viewBox="0 0 30 26" fill="currentColor">
+            <path d="M19.1 0H30v26L19.1 0zM10.9 0H0v26L10.9 0zM15 9.6L22.1 26h-4.6l-2.1-5.2h-5.2L15 9.6z"/>
+          </svg>
+          Adobe
+        </div>
+        <p>Sign in or create an account</p>
+      </div>
+      <div class="login-right">
+        <div class="login-banner">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
+          </svg>
+          For your protection, please verify your identity.
+        </div>
+        <div class="login-form">
+          <h1>Enter your password</h1>
+          <div class="user-info">
+            <div class="user-info-avatar"></div>
+            <div class="user-info-text">
+              <div class="email">user@email.com</div>
+              <div class="account-type">Personal Account</div>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label>Password</label>
+            <input type="password" class="password-input" id="passwordInput" readonly value="">
+          </div>
+          
+          <div class="form-row">
+            <div class="toggle-switch">
+              <div class="toggle"></div>
+              Stay signed in
+            </div>
+            <button class="btn btn-primary" id="continueLoginBtn">Continue</button>
+          </div>
+          
+          <a href="#" class="reset-password">Reset your password</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Screen 4: Step 1 - Details -->
+  <div id="screen4" class="screen">
+    <nav class="navbar">
+      <div class="navbar-left">
+        <a href="#" class="adobe-logo">
+          <svg viewBox="0 0 30 26" fill="currentColor">
+            <path d="M19.1 0H30v26L19.1 0zM10.9 0H0v26L10.9 0zM15 9.6L22.1 26h-4.6l-2.1-5.2h-5.2L15 9.6z"/>
+          </svg>
+          Adobe Account
+        </a>
+        <div class="nav-links">
+          <a href="#" class="nav-link">Overview</a>
+          <a href="#" class="nav-link">Account and security <svg viewBox="0 0 12 12"><path d="M3 4.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></a>
+          <a href="#" class="nav-link">Plans and payment <svg viewBox="0 0 12 12"><path d="M3 4.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></a>
+          <a href="#" class="nav-link">Communication preferences <svg viewBox="0 0 12 12"><path d="M3 4.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></a>
+        </div>
+      </div>
+      <div class="navbar-right">
+        <div class="notification-badge">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+          </svg>
+        </div>
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="currentColor">
+          <circle cx="4" cy="4" r="2"/><circle cx="12" cy="4" r="2"/><circle cx="20" cy="4" r="2"/>
+          <circle cx="4" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="20" cy="12" r="2"/>
+          <circle cx="4" cy="20" r="2"/><circle cx="12" cy="20" r="2"/><circle cx="20" cy="20" r="2"/>
+        </svg>
+        <div class="user-avatar"></div>
+      </div>
+    </nav>
+    
+    <main class="main-content">
+      <div class="modal-overlay">
+        <div class="cancel-modal modal">
+          <div class="cancel-header">
+            <div class="cancel-header-left">
+              <span class="cancel-header-separator">|</span>
+              <h2>Cancel your plan <span style="color: #6e6e6e;">/</span> <span class="cc-icon-small"></span> Creative Cloud All Apps 100GB</h2>
+            </div>
+            <div class="cancel-header-right">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/>
+              </svg>
+              <span>|</span>
+              <span>user@email.com</span>
+              <span>|</span>
+              <button class="modal-close" id="closeModal5" data-cta="close-step2">&times;</button>
+
+              <button class="modal-close" id="closeModal4" data-cta="close-step1">&times;</button>
+            </div>
+          </div>
+          
+          <div class="cancel-body">
+            <div class="cancel-main">
+              <div class="step-indicator">Step 1 of 4: Details</div>
+              <h1>Canceling your plan today means:</h1>
+              
+              <div class="details-cards">
+                <div class="detail-card">
+                  <div class="detail-card-header warning">
+                    <svg viewBox="0 0 24 24" fill="white">
+                      <path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/>
+                    </svg>
+                  </div>
+                  <div class="detail-card-body">
+                    <h3>You'll be charged an early cancellation fee:</h3>
+                    <div class="cancellation-fee">$119.88</div>
+                    <p>As part of the original subscribed agreement, this fee will apply if you cancel now and end your annual commitment early. <a href="#" class="learn-more">Learn more</a>.</p>
+                  </div>
+                </div>
+                
+                <div class="detail-card">
+                  <div class="detail-card-header cc">
+                    <svg viewBox="0 0 48 48" width="32" height="32">
+                      <circle cx="24" cy="24" r="18" fill="white"/>
+                      <circle cx="24" cy="24" r="12" fill="none" stroke="url(#ccGrad)" stroke-width="5"/>
+                      <defs>
+                        <linearGradient id="ccGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                          <stop offset="0%" stop-color="#FF3366"/>
+                          <stop offset="50%" stop-color="#FF0066"/>
+                          <stop offset="100%" stop-color="#7C4DFF"/>
+                        </linearGradient>
+                      </defs>
+                    </svg>
+                  </div>
+                  <div class="detail-card-body">
+                    <h3>Your subscription will end in <span id="daysRemaining1">9</span> days.</h3>
+                    <div class="subscription-info">
+                      <svg viewBox="0 0 24 24" fill="#6e6e6e" width="14" height="14">
+                        <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11z"/>
+                      </svg>
+                      <span>You've already paid for the <span id="daysRemaining2">9</span> days remaining on your subscription.</span>
+                    </div>
+                    <p>After <span id="endDate1"></span>, you'll lose access to premium apps and services.</p>
+                  </div>
+                </div>
+                
+                <div class="detail-card">
+                  <div class="detail-card-header apps">
+                    <svg viewBox="0 0 48 48" width="32" height="32">
+                      <circle cx="24" cy="24" r="18" fill="white"/>
+                      <circle cx="24" cy="24" r="12" fill="none" stroke="url(#ccGrad2)" stroke-width="5"/>
+                      <defs>
+                        <linearGradient id="ccGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+                          <stop offset="0%" stop-color="#FF3366"/>
+                          <stop offset="50%" stop-color="#FF0066"/>
+                          <stop offset="100%" stop-color="#7C4DFF"/>
+                        </linearGradient>
+                      </defs>
+                    </svg>
+                  </div>
+                  <div class="detail-card-body">
+                    <h3>You'll no longer be able to access most of your favourite apps.</h3>
+                    <div class="app-icons">
+                      <span class="app-icon ps">Ps</span>
+                      <span class="app-icon lr">Lr</span>
+                      <span class="app-icon lrc">Lrc</span>
+                      <span class="app-icon ai">Ai</span>
+                      <span class="app-icon id">Id</span>
+                    </div>
+                    <p>Creative Cloud All Apps 100GB</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="cancel-footer">
+            <button class="btn" id="closeStep1" data-cta="close-step1">Close</button>
+            <div class="cancel-footer-right">
+              <button class="btn btn-primary" id="continueStep1" data-cta="continue-step1">Continue</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Screen 5: Step 2 - Feedback -->
+  <div id="screen5" class="screen">
+    <nav class="navbar">
+      <div class="navbar-left">
+        <a href="#" class="adobe-logo">
+          <svg viewBox="0 0 30 26" fill="currentColor">
+            <path d="M19.1 0H30v26L19.1 0zM10.9 0H0v26L10.9 0zM15 9.6L22.1 26h-4.6l-2.1-5.2h-5.2L15 9.6z"/>
+          </svg>
+          Adobe Account
+        </a>
+        <div class="nav-links">
+          <a href="#" class="nav-link">Overview</a>
+          <a href="#" class="nav-link">Account and security <svg viewBox="0 0 12 12"><path d="M3 4.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></a>
+          <a href="#" class="nav-link">Plans and payment <svg viewBox="0 0 12 12"><path d="M3 4.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></a>
+          <a href="#" class="nav-link">Communication preferences <svg viewBox="0 0 12 12"><path d="M3 4.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></a>
+        </div>
+      </div>
+      <div class="navbar-right">
+        <div class="notification-badge">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+          </svg>
+        </div>
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="currentColor">
+          <circle cx="4" cy="4" r="2"/><circle cx="12" cy="4" r="2"/><circle cx="20" cy="4" r="2"/>
+          <circle cx="4" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="20" cy="12" r="2"/>
+          <circle cx="4" cy="20" r="2"/><circle cx="12" cy="20" r="2"/><circle cx="20" cy="20" r="2"/>
+        </svg>
+        <div class="user-avatar"></div>
+      </div>
+    </nav>
+    
+    <main class="main-content">
+      <div class="modal-overlay">
+        <div class="cancel-modal modal">
+          <div class="cancel-header">
+            <div class="cancel-header-left">
+              <button class="back-btn" id="backStep2" data-cta="back-step2">&larr;</button>
+              <span class="cancel-header-separator">|</span>
+              <h2>Cancel your plan <span style="color: #6e6e6e;">/</span> <span class="cc-icon-small"></span> Creative Cloud All Apps 100GB</h2>
+            </div>
+            <div class="cancel-header-right">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/>
+              </svg>
+              <span>|</span>
+              <span>user@email.com</span>
+              <span>|</span>
+              <button class="modal-close" id="closeModal5" data-cta="close-step2">&times;</button>
+
+              <button class="modal-close" id="closeModal5" data-cta="close-step2">&times;</button>
+            </div>
+          </div>
+          
+          <div class="cancel-body">
+            <div class="cancel-main">
+              <div class="step-indicator">Step 2 of 4: Feedback</div>
+              <h1>We're sorry to see you go.</h1>
+              <p class="feedback-subtitle">Which one of these describe your experience? <span style="color: #6e6e6e; font-size: 12px;">(Select at least one to continue)</span></p>
+              
+              <ul class="checkbox-list">
+                <li class="checkbox-item">
+                  <label class="checkbox-label">
+                    <input type="checkbox" name="reason" value="project-completed">
+                    I needed the product(s) for a project I've since completed.
+                  </label>
+                </li>
+                <li class="checkbox-item">
+                  <label class="checkbox-label">
+                    <input type="checkbox" name="reason" value="too-expensive">
+                    It's too expensive.
+                  </label>
+                </li>
+                <li class="checkbox-item">
+                  <label class="checkbox-label">
+                    <input type="checkbox" name="reason" value="didnt-work">
+                    The apps or services didn't work as expected.
+                  </label>
+                </li>
+                <li class="checkbox-item">
+                  <label class="checkbox-label">
+                    <input type="checkbox" name="reason" value="change-plan">
+                    I'm looking to change my plan.
+                  </label>
+                </li>
+                <li class="checkbox-item">
+                  <label class="checkbox-label">
+                    <input type="checkbox" name="reason" value="not-using">
+                    I'm not using the product(s) often enough.
+                  </label>
+                </li>
+                <li class="checkbox-item">
+                  <label class="checkbox-label">
+                    <input type="checkbox" name="reason" value="another-membership">
+                    I have another membership with Adobe.
+                  </label>
+                </li>
+                <li class="checkbox-item">
+                  <label class="checkbox-label">
+                    <input type="checkbox" name="reason" value="too-complicated">
+                    Product(s) and features are too complicated for me.
+                  </label>
+                </li>
+                <li class="checkbox-item">
+                  <label class="checkbox-label">
+                    <input type="checkbox" name="reason" value="technical-issues">
+                    I'm having too many technical issues.
+                  </label>
+                </li>
+              </ul>
+            </div>
+            
+            <div class="cancel-sidebar">
+              <h3>Your plan details</h3>
+              <div class="sidebar-plan">
+                <div class="cc-icon-small"></div>
+                <div>
+                  <div class="sidebar-plan-name">Creative Cloud All Apps 100GB</div>
+                </div>
+              </div>
+              <div class="sidebar-commitment">Commitment</div>
+              <div style="font-size: 13px;">Annual plan, paid monthly - $54.99/mo</div>
+            </div>
+          </div>
+          
+          <div class="cancel-footer">
+            <button class="btn" id="closeStep2" data-cta="close-step2">Close</button>
+            <div class="cancel-footer-right">
+              <button class="btn" id="previousStep2" data-cta="previous-step2">Previous</button>
+              <button class="btn btn-primary" id="continueStep2" data-cta="continue-step2" disabled>Continue</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Screen 6: Switch Plan Popup -->
+  <div id="screen6" class="screen">
+    <nav class="navbar">
+      <div class="navbar-left">
+        <a href="#" class="adobe-logo">
+          <svg viewBox="0 0 30 26" fill="currentColor">
+            <path d="M19.1 0H30v26L19.1 0zM10.9 0H0v26L10.9 0zM15 9.6L22.1 26h-4.6l-2.1-5.2h-5.2L15 9.6z"/>
+          </svg>
+          Adobe Account
+        </a>
+        <div class="nav-links">
+          <a href="#" class="nav-link">Overview</a>
+          <a href="#" class="nav-link">Account and security <svg viewBox="0 0 12 12"><path d="M3 4.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></a>
+          <a href="#" class="nav-link">Plans and payment <svg viewBox="0 0 12 12"><path d="M3 4.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></a>
+          <a href="#" class="nav-link">Communication preferences <svg viewBox="0 0 12 12"><path d="M3 4.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></a>
+        </div>
+      </div>
+      <div class="navbar-right">
+        <div class="notification-badge">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+          </svg>
+        </div>
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="currentColor">
+          <circle cx="4" cy="4" r="2"/><circle cx="12" cy="4" r="2"/><circle cx="20" cy="4" r="2"/>
+          <circle cx="4" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="20" cy="12" r="2"/>
+          <circle cx="4" cy="20" r="2"/><circle cx="12" cy="20" r="2"/><circle cx="20" cy="20" r="2"/>
+        </svg>
+        <div class="user-avatar"></div>
+      </div>
+    </nav>
+    
+    <main class="main-content">
+      <div class="modal-overlay">
+        <div class="cancel-modal modal" style="opacity: 0.3; pointer-events: none;">
+          <!-- Background content dimmed -->
+        </div>
+      </div>
+      
+      <!-- Switch Plan Popup -->
+      <div class="popup-overlay" id="switchPlanPopup">
+        <div class="popup">
+          <h2>Can we help you switch products or change some part of your current plan?</h2>
+          <p>We want to help you find the plan best suited for your needs. Switching to a new product or changing the details of your current plan is fast and easy — <strong>and you don't have to cancel to do it.</strong></p>
+          <div class="popup-buttons">
+            <button class="btn" id="noThanksPopup" data-cta="no-thanks-popup">No thanks</button>
+            <button class="btn btn-primary" id="changeMyPlan" data-cta="change-my-plan">Change my plan</button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Screen 7: Step 3 - Offers -->
+  <div id="screen7" class="screen">
+    <nav class="navbar">
+      <div class="navbar-left">
+        <a href="#" class="adobe-logo">
+          <svg viewBox="0 0 30 26" fill="currentColor">
+            <path d="M19.1 0H30v26L19.1 0zM10.9 0H0v26L10.9 0zM15 9.6L22.1 26h-4.6l-2.1-5.2h-5.2L15 9.6z"/>
+          </svg>
+          Adobe Account
+        </a>
+        <div class="nav-links">
+          <a href="#" class="nav-link">Overview</a>
+          <a href="#" class="nav-link">Account and security <svg viewBox="0 0 12 12"><path d="M3 4.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></a>
+          <a href="#" class="nav-link">Plans and payment <svg viewBox="0 0 12 12"><path d="M3 4.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></a>
+          <a href="#" class="nav-link">Communication preferences <svg viewBox="0 0 12 12"><path d="M3 4.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></a>
+        </div>
+      </div>
+      <div class="navbar-right">
+        <div class="notification-badge">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+          </svg>
+        </div>
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="currentColor">
+          <circle cx="4" cy="4" r="2"/><circle cx="12" cy="4" r="2"/><circle cx="20" cy="4" r="2"/>
+          <circle cx="4" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="20" cy="12" r="2"/>
+          <circle cx="4" cy="20" r="2"/><circle cx="12" cy="20" r="2"/><circle cx="20" cy="20" r="2"/>
+        </svg>
+        <div class="user-avatar"></div>
+      </div>
+    </nav>
+    
+    <main class="main-content">
+      <div class="modal-overlay">
+        <div class="cancel-modal modal">
+          <div class="cancel-header">
+            <div class="cancel-header-left">
+              <button class="back-btn" id="backStep3" data-cta="back-step3">&larr;</button>
+              <span class="cancel-header-separator">|</span>
+              <h2>Cancel your plan <span style="color: #6e6e6e;">/</span> <span class="cc-icon-small"></span> Creative Cloud All Apps 100GB</h2>
+            </div>
+            <div class="cancel-header-right">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/>
+              </svg>
+              <span>|</span>
+              <span>user@email.com</span>
+              <span>|</span>
+              <button class="modal-close" id="closeModal5" data-cta="close-step2">&times;</button>
+            <button class="modal-close" id="closeModal7" data-cta="close-step3">&times;</button>
+            </div>
+          </div>
+          
+          <div class="cancel-body">
+            <div class="cancel-main">
+              <div class="step-indicator">Step 3 of 4: Offers</div>
+              <h1 style="font-size: 20px;">Before you decide to cancel, consider these offers:</h1>
+              <p class="offers-subtitle">Check out these offers personalized for you.</p>
+              
+              <div class="offers-grid">
+                <div class="offer-card">
+                  <div class="offer-card-header">
+                    <span class="best-offer-badge">Best Offer</span>
+                  </div>
+                  <div class="offer-card-body">
+                    <h3>Creative Cloud All Apps 100GB</h3>
+                    <p>Get your next two months free and save $109.98.</p>
+                    <div class="offer-pricing">
+                      <div class="regular">Regular $54.99/mo</div>
+                      <div class="promo">Your price for the next 60 days</div>
+                      <div class="price">$0.00</div>
+                    </div>
+                    <button class="btn" id="acceptOffer" data-cta="accept-offer">Accept offer</button>
+                  </div>
+                </div>
+                
+                <div class="offer-card">
+                  <div class="offer-card-header search">
+                    <svg viewBox="0 0 24 24" fill="white">
+                      <circle cx="11" cy="11" r="8" fill="none" stroke="white" stroke-width="2"/>
+                      <path d="M21 21l-4.35-4.35" stroke="white" stroke-width="2"/>
+                    </svg>
+                  </div>
+                  <div class="offer-card-body">
+                    <h3>Want a different plan?</h3>
+                    <p>Find the plan that's right for you.</p>
+                    <select class="offer-select" id="planSelect" data-cta="select-different-plan">
+                      <option>Search/select</option>
+                      <option>Photoshop</option>
+                      <option>Lightroom</option>
+                      <option>Illustrator</option>
+                    </select>
+                  </div>
+                </div>
+                
+                <div class="offer-card">
+                  <div class="offer-card-header chat">
+                    <svg viewBox="0 0 24 24" fill="white">
+                      <path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 9h12v2H6V9zm8 5H6v-2h8v2zm4-6H6V6h12v2z"/>
+                    </svg>
+                  </div>
+                  <div class="offer-card-body">
+                    <h3>Let's talk: check for a custom deal.</h3>
+                    <p>We can help you find the right plan, answer any questions, or maybe even give you a special offer.</p>
+                    <button class="btn" id="startChat" data-cta="start-chat">Start chat</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="cancel-footer">
+            <button class="btn" id="closeStep7" data-cta="close-step3">Close</button>
+            <div class="cancel-footer-right">
+              <button class="btn" id="previousStep7" data-cta="previous-step3">Previous</button>
+              <button class="btn btn-primary" id="noThanksStep7" data-cta="no-thanks-step3">No thanks</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Screen 8: Step 4 - Review -->
+  <div id="screen8" class="screen">
+    <nav class="navbar">
+      <div class="navbar-left">
+        <a href="#" class="adobe-logo">
+          <svg viewBox="0 0 30 26" fill="currentColor">
+            <path d="M19.1 0H30v26L19.1 0zM10.9 0H0v26L10.9 0zM15 9.6L22.1 26h-4.6l-2.1-5.2h-5.2L15 9.6z"/>
+          </svg>
+          Adobe Account
+        </a>
+        <div class="nav-links">
+          <a href="#" class="nav-link">Overview</a>
+          <a href="#" class="nav-link">Account and security <svg viewBox="0 0 12 12"><path d="M3 4.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></a>
+          <a href="#" class="nav-link">Plans and payment <svg viewBox="0 0 12 12"><path d="M3 4.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></a>
+          <a href="#" class="nav-link">Communication preferences <svg viewBox="0 0 12 12"><path d="M3 4.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></a>
+        </div>
+      </div>
+      <div class="navbar-right">
+        <div class="notification-badge">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+          </svg>
+        </div>
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="currentColor">
+          <circle cx="4" cy="4" r="2"/><circle cx="12" cy="4" r="2"/><circle cx="20" cy="4" r="2"/>
+          <circle cx="4" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="20" cy="12" r="2"/>
+          <circle cx="4" cy="20" r="2"/><circle cx="12" cy="20" r="2"/><circle cx="20" cy="20" r="2"/>
+        </svg>
+        <div class="user-avatar"></div>
+      </div>
+    </nav>
+    
+    <main class="main-content">
+      <div class="modal-overlay">
+        <div class="cancel-modal modal">
+          <div class="cancel-header">
+            <div class="cancel-header-left">
+              <span class="cancel-header-separator">|</span>
+              <h2>Cancel your plan <span style="color: #6e6e6e;">/</span> <span class="cc-icon-small"></span> Creative Cloud All Apps 100GB</h2>
+            </div>
+            <div class="cancel-header-right">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/>
+              </svg>
+              <span>|</span>
+              <span>user@email.com</span>
+              <span>|</span>
+              <button class="modal-close" id="closeModal8" data-cta="close-step4">&times;</button>
+            </div>
+          </div>
+          
+          <div class="cancel-body">
+            <div class="cancel-main">
+              <h1 style="font-size: 20px;">Cancellation details include:</h1>
+              
+              <ul class="review-list">
+                <li class="review-item">
+                  <svg class="review-icon" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11z"/>
+                  </svg>
+                  <div class="review-content">
+                    <h3>Plan date</h3>
+                    <p>Your plan will end on your next billing date <strong id="endDate2"></strong>.</p>
+                  </div>
+                </li>
+                <li class="review-item">
+                  <svg class="review-icon" viewBox="0 0 24 24" fill="currentColor">
+                    <circle cx="4" cy="4" r="2"/><circle cx="12" cy="4" r="2"/><circle cx="20" cy="4" r="2"/>
+                    <circle cx="4" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="20" cy="12" r="2"/>
+                    <circle cx="4" cy="20" r="2"/><circle cx="12" cy="20" r="2"/><circle cx="20" cy="20" r="2"/>
+                  </svg>
+                  <div class="review-content">
+                    <h3>Apps</h3>
+                    <p>You will no longer have access to your applications, nor most of the services included in your paid plan.</p>
+                  </div>
+                </li>
+                <li class="review-item">
+                  <svg class="review-icon" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z"/>
+                  </svg>
+                  <div class="review-content">
+                    <h3>Storage</h3>
+                    <p>Your cloud storage will be <strong>reduced to 5GB</strong>. If it remains over this limit, you have 90 days to reduce your online usage or you could lose access to some or all of your files saved on the Creative Cloud servers.</p>
+                  </div>
+                </li>
+                <li class="review-item">
+                  <svg class="review-icon" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/>
+                  </svg>
+                  <div class="review-content">
+                    <h3>Files</h3>
+                    <p>If you saved your work on your computer, you continue to have access to those files on your device.</p>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            
+            <div class="cancel-sidebar">
+              <h3>Affected plan</h3>
+              <div class="sidebar-plan">
+                <div class="cc-icon-small"></div>
+                <div>
+                  <div class="sidebar-plan-name">Creative Cloud All Apps 100GB</div>
+                </div>
+              </div>
+              <div class="sidebar-commitment">Subscription</div>
+              <div style="font-size: 13px;">Monthly plan</div>
+            </div>
+          </div>
+          
+          <div class="cancel-footer">
+            <button class="btn" id="closeStep8" data-cta="close-step4">Close</button>
+            <div class="cancel-footer-right">
+              <button class="btn btn-danger" id="confirmCancellation" data-cta="confirm-cancellation">Confirm cancellation</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+    // ==================== TRACKING SYSTEM ====================
+    const tracking = {
+      startTime: Date.now(),
+      clicks: [],
+      hovers: [],
+      selectedReasons: []
+    };
+
+    function getTimeElapsed() {
+      return ((Date.now() - tracking.startTime) / 1000).toFixed(1);
+    }
+
+    function trackClick(ctaName) {
+      tracking.clicks.push({
+        cta: ctaName,
+        time: getTimeElapsed()
+      });
+    }
+
+    function trackHover(ctaName) {
+      const existingHover = tracking.hovers.find(h => h.cta === ctaName && h.time === getTimeElapsed());
+      if (!existingHover) {
+        tracking.hovers.push({
+          cta: ctaName,
+          time: getTimeElapsed()
+        });
+      }
+    }
+
+    function getOriginalParams() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const params = {};
+      for (const [key, value] of urlParams) {
+        params[key] = value;
+      }
+      return params;
+    }
+
+    function redirectToQualtrics(finalChoice) {
+      const decisionTime = getTimeElapsed();
+      const originalParams = getOriginalParams();
+      
+      const allClicks = tracking.clicks.map(c => `${c.cta}:${c.time}`).join('|');
+      const allHovers = tracking.hovers.map(h => `${h.cta}:${h.time}`).join('|');
+      
+      const params = new URLSearchParams();
+      
+      // Add original params
+      for (const [key, value] of Object.entries(originalParams)) {
+        params.set(key, value);
+      }
+      
+      // Add tracking params
+      params.set('allClicks', allClicks);
+      params.set('finalChoice', finalChoice);
+      params.set('decisionTime', decisionTime);
+      params.set('allHovers', allHovers);
+      
+      // Add selected reasons if any
+      if (tracking.selectedReasons.length > 0) {
+        params.set('selectedReasons', tracking.selectedReasons.join('|'));
+      }
+      
+      const url = `https://www.qualtrics.com/placeholderURL?${params.toString()}`;
+      window.location.href = url;
+    }
+
+    // ==================== DATE CALCULATIONS ====================
+    function formatDate(date) {
+      const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+      return `${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
+    }
+
+    function initializeDates() {
+      const now = new Date();
+      
+      // Next billing date = 9 days from now
+      const nextBilling = new Date(now);
+      nextBilling.setDate(nextBilling.getDate() + 9);
+      
+      // Subscription started ~3 years ago
+      const subscriptionStart = new Date(now);
+      subscriptionStart.setFullYear(subscriptionStart.getFullYear() - 3);
+      subscriptionStart.setMonth(2); // March
+      subscriptionStart.setDate(16);
+      
+      // Days remaining
+      const daysRemaining = 9;
+      
+      // Update all date elements
+      document.querySelectorAll('#nextPaymentDate1').forEach(el => {
+        el.textContent = formatDate(nextBilling);
+      });
+      
+      document.querySelectorAll('#subscribedDate').forEach(el => {
+        el.textContent = formatDate(subscriptionStart);
+      });
+      
+      document.querySelectorAll('#daysRemaining1, #daysRemaining2').forEach(el => {
+        el.textContent = daysRemaining;
+      });
+      
+      document.querySelectorAll('#endDate1, #endDate2').forEach(el => {
+        el.textContent = formatDate(nextBilling);
+      });
+    }
+
+    // ==================== SCREEN MANAGEMENT ====================
+    let currentScreen = 1;
+
+    function showScreen(screenNum) {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      document.getElementById(`screen${screenNum}`).classList.add('active');
+      currentScreen = screenNum;
+      
+      // Special handling for login screen
+      if (screenNum === 3) {
+        startPasswordAnimation();
+      }
+    }
+
+    // ==================== PASSWORD ANIMATION ====================
+    function startPasswordAnimation() {
+      const passwordInput = document.getElementById('passwordInput');
+      passwordInput.value = '';
+      
+      const password = '••••••••••••';
+      let index = 0;
+      
+      const typeInterval = setInterval(() => {
+        if (index < password.length) {
+          passwordInput.value += '•';
+          index++;
+        } else {
+          clearInterval(typeInterval);
+          // Auto-submit after typing
+          setTimeout(() => {
+            trackClick('auto-login-submit');
+            showScreen(4);
+          }, 800);
+        }
+      }, 150);
+    }
+
+    // ==================== EVENT LISTENERS ====================
+    function setupEventListeners() {
+      // Add hover tracking to all CTA buttons
+      document.querySelectorAll('[data-cta]').forEach(btn => {
+        btn.addEventListener('mouseenter', () => {
+          trackHover(btn.dataset.cta);
+        });
+      });
+
+      // Screen 1: Cancel Subscription button
+      document.getElementById('managePlanBtn').addEventListener('click', () => {
+        trackClick('cancel-subscription');
+        showScreen(8);
+      });
+
+      // Screen 2: Modal buttons
+      document.getElementById('closeModal2').addEventListener('click', () => {
+        trackClick('close-manage-plan');
+        redirectToQualtrics('close-manage-plan');
+      });
+      
+      document.getElementById('changePlanBtn').addEventListener('click', () => {
+        trackClick('change-your-plan');
+        redirectToQualtrics('change-your-plan');
+      });
+      
+      document.getElementById('cancelPlanBtn').addEventListener('click', () => {
+        trackClick('cancel-your-plan');
+        showScreen(3);
+      });
+
+      // Screen 4: Step 1 buttons
+      document.getElementById('closeModal4')?.addEventListener('click', () => {
+        trackClick('close-step1');
+        redirectToQualtrics('close-step1');
+      });
+      
+      document.getElementById('closeStep1').addEventListener('click', () => {
+        trackClick('close-step1');
+        redirectToQualtrics('close-step1');
+      });
+      
+      document.getElementById('continueStep1').addEventListener('click', () => {
+        trackClick('continue-step1');
+        showScreen(5);
+      });
+
+      // Screen 5: Step 2 buttons and checkboxes
+      document.getElementById('closeModal5')?.addEventListener('click', () => {
+        trackClick('close-step2');
+        redirectToQualtrics('close-step2');
+      });
+      
+      document.getElementById('closeStep2').addEventListener('click', () => {
+        trackClick('close-step2');
+        redirectToQualtrics('close-step2');
+      });
+      
+      document.getElementById('backStep2')?.addEventListener('click', () => {
+        trackClick('back-step2');
+        showScreen(4);
+      });
+      
+      document.getElementById('previousStep2').addEventListener('click', () => {
+        trackClick('previous-step2');
+        showScreen(4);
+      });
+      
+      // Handle checkbox selections in Screen 5
+      document.querySelectorAll('#screen5 input[type="checkbox"]').forEach(checkbox => {
+        checkbox.addEventListener('change', () => {
+          const continueBtn = document.getElementById('continueStep2');
+          const anyChecked = document.querySelectorAll('#screen5 input[type="checkbox"]:checked').length > 0;
+          continueBtn.disabled = !anyChecked;
+          
+          // Track selected reasons
+          tracking.selectedReasons = [];
+          document.querySelectorAll('#screen5 input[type="checkbox"]:checked').forEach(cb => {
+            tracking.selectedReasons.push(cb.value);
+          });
+        });
+      });
+      
+      document.getElementById('continueStep2').addEventListener('click', () => {
+        trackClick('continue-step2');
+        showScreen(6);
+      });
+
+      // Screen 6: Popup buttons
+      document.getElementById('noThanksPopup').addEventListener('click', () => {
+        trackClick('no-thanks-popup');
+        showScreen(7);
+      });
+      
+      document.getElementById('changeMyPlan').addEventListener('click', () => {
+        trackClick('change-my-plan');
+        redirectToQualtrics('change-my-plan');
+      });
+
+      // Screen 7: Step 3 buttons
+      document.getElementById('closeModal7')?.addEventListener('click', () => {
+        trackClick('close-step3');
+        redirectToQualtrics('close-step3');
+      });
+      
+      document.getElementById('closeStep7').addEventListener('click', () => {
+        trackClick('close-step3');
+        redirectToQualtrics('close-step3');
+      });
+      
+      document.getElementById('backStep3')?.addEventListener('click', () => {
+        trackClick('back-step3');
+        showScreen(6);
+      });
+      
+      document.getElementById('previousStep7').addEventListener('click', () => {
+        trackClick('previous-step3');
+        showScreen(6);
+      });
+      
+      document.getElementById('acceptOffer').addEventListener('click', () => {
+        trackClick('accept-offer');
+        redirectToQualtrics('accept-offer');
+      });
+      
+      document.getElementById('startChat').addEventListener('click', () => {
+        trackClick('start-chat');
+        redirectToQualtrics('start-chat');
+      });
+      
+      document.getElementById('planSelect').addEventListener('change', (e) => {
+        if (e.target.value !== 'Search/select') {
+          trackClick('select-different-plan');
+          redirectToQualtrics('select-different-plan');
+        }
+      });
+      
+      document.getElementById('noThanksStep7').addEventListener('click', () => {
+        trackClick('no-thanks-step3');
+        showScreen(8);
+      });
+
+      // Screen 8: Step 4 buttons
+      document.getElementById('closeModal8')?.addEventListener('click', () => {
+        trackClick('close-step4');
+        redirectToQualtrics('close-step4');
+      });
+      
+      document.getElementById('closeStep8').addEventListener('click', () => {
+        trackClick('close-step4');
+        redirectToQualtrics('close-step4');
+      });
+      
+      document.getElementById('confirmCancellation').addEventListener('click', () => {
+        trackClick('confirm-cancellation');
+        redirectToQualtrics('confirm-cancellation');
+      });
+    }
+
+    // ==================== INITIALIZATION ====================
+    window.addEventListener('DOMContentLoaded', () => {
+      initializeDates();
+      setupEventListeners();
+      showScreen(1); // Start with screen 1
+    });
+  </script>
+</body>
+</html>
